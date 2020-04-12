@@ -1,7 +1,6 @@
 (ns webapp.helper
   (:require
-   [aero.core :refer (read-config)]
-   [taoensso.timbre :as timbre]))
+   [aero.core :refer (read-config)]))
 
 (def env-definitions
   {:development "dev"

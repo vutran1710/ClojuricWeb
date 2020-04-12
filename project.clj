@@ -6,8 +6,11 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [http-kit "2.3.0"]
                  [metosin/reitit "0.4.2"]
-                 [com.taoensso/timbre "4.10.0"]
                  [ring/ring-devel "1.8.0"]
+                 ;; [com.taoensso/timbre "4.10.0"]
+                 [cambium/cambium.core         "0.9.3"]
+                 [cambium/cambium.codec-simple "0.9.3"]
+                 [cambium/cambium.logback.core "0.4.3"]
                  [aero "1.1.6"]]
   :main webapp.core
   :repl-options {:init-ns webapp.core}

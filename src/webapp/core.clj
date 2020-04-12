@@ -8,7 +8,7 @@
             [muuntaja.core :as m]
             [reitit.ring.coercion :as coercion]
             [aero.core :refer (read-config)]
-            [taoensso.timbre :as timbre])
+            [cambium.core  :as log])
   (:require [webapp.routes.simple :as simple-route]
             [webapp.helper :refer (load-config is-dev? env)]))
 
@@ -34,6 +34,6 @@
 
 (defn -main
   [& args]
-  (timbre/debug (str "CLJ_ENV=" env))
+  (log/debug (str "CLJ_ENV=" env))
   (server/run-server #'app server-cfg)
-  (timbre/info (str "Running webserver at http:/127.0.0.1:" (:port server-cfg) "/")))
+  (log/info (str "Running webserver at http:/127.0.0.1:" (:port server-cfg) "/")))

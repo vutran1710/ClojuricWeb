@@ -1,8 +1,7 @@
 (ns webapp.routes.simple
   (:require [org.httpkit.server :as server]
             [reitit.ring :as ring]
-            [aero.core :refer (read-config)]
-            [taoensso.timbre :refer (info warn)]))
+            [aero.core :refer (read-config)]))
 
 (def routes
   ["/plain"
