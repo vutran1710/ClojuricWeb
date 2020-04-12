@@ -8,10 +8,11 @@
             [reitit.ring.coercion :as coercion]
             [aero.core :refer (read-config)]
             [taoensso.timbre :as timbre])
-  (:require [webapp.routes.simple :as simple-route]))
+  (:require [webapp.routes.simple :as simple-route]
+            [webapp.helper :refer (load-config)]))
 
-(def config
-  (read-config "config.edn" {:profile :dev}))
+(def config (load-config))
+(def server-cfg (:webserver config))
 
 (def app
   (ring/ring-handler
@@ -27,6 +28,5 @@
 
 (defn -main
   [& args]
-  (let [server-cfg (:webserver config)]
-    (server/run-server #'app server-cfg)
-    (timbre/info (str "Running webserver at http:/127.0.0.1:" (:port server-cfg) "/"))))
+  (server/run-server #'app server-cfg)
+  (timbre/info (str "Running webserver at http:/127.0.0.1:" (:port server-cfg) "/")))

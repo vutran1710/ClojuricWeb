@@ -6,11 +6,13 @@
 
 (def routes
   ["/plain"
-   ["/plus" {:get (fn [{{:strs [x y]} :query-params :as req}]
-                    (info x)
-                    (warn y)
-                    {:status 200
-                     :body {:total (+ (Long/parseLong x) (Long/parseLong y))}})
+   ["/plus" {:get  (fn [{{:strs [x y]} :query-params :as req}]
+                     (let [result   (+ (Long/parseLong x) (Long/parseLong y))
+                           response {:total result}]
+                       {:status 200
+                        :body   response}))
              :post (fn [{{:keys [x y]} :body-params}]
-                     {:status 200
-                      :body {:total (+ x y)}})}]])
+                     (let [result   (+ x y)
+                           response {:total result}]
+                       {:status 200
+                        :body   response}))}]])

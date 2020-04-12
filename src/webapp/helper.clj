@@ -9,8 +9,13 @@
    :staging     "stg"
    :test        "test"})
 
+(def env
+  (get (System/getenv) "CLJ_ENV" "development"))
+
+(def is-dev?
+  (= env "development"))
+
 (defn load-config []
-  (let [env     (get (System/getenv) "CLJ_ENV" "development")
-        profile ((keyword env) env-definitions)
-        cfg     (read-config "config.edn" {:profile (keyword profile)})]
-    cfg))
+  (let [profile ((keyword env) env-definitions)]
+    (read-config "config.edn"
+                 {:profile (keyword profile)})))
