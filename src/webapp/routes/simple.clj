@@ -1,4 +1,4 @@
-(ns webapp.routes
+(ns webapp.routes.simple
   (:require [org.httpkit.server :as server]
             [reitit.ring :as ring]
             [aero.core :refer (read-config)]
