@@ -6,12 +6,90 @@
 
 * Content                                                               :TOC:
 - [[#introduction][Introduction]]
-- [[#install][Install]]
+- [[#get-it-up][Get it up!]]
+- [[#benchmarking][Benchmarking]]
 
 * Introduction
-A webserver with *HTTPKit* and *Reitit*, and stress-testing...
+Testing webserver with *HTTPKit* and *Reitit*, versus some other frameworks
 
-* Install
+* Get it up!
+
+/Prerequisites/: Java 8 or 11
+
+Install all the deps
+
 #+begin_src  code
 $ lein install
 #+end_src
+
+**** Running in DEVELOPMENT mode
+#+begin_src shell
+$ lein run
+#+end_src
+
+**** Running in PRODUCTION mode
+Build the jar
+#+begin_src shell
+  $ lein uberjar
+  # ...
+  # Compiling webapp.core
+  # Created /<proj-dir>/target/webapp-0.1.0-SNAPSHOT.jar
+  # Created /<proj-dir>/target/webapp-0.1.0-SNAPSHOT-standalone.jar
+#+end_src
+
+Run the jar file with proper ENV
+#+begin_src shell
+$ CLJ_ENV=production java -jar target/webapp-0.1.0-SNAPSHOT-standalone.jar
+#+end_src
+
+* Benchmarking
+
+- Tool: [[https://github.com/codesenberg/bombardier][bombardier]]
+- Concurrent connection: 100
+- Duration: 10s
+- Testing on a simple API that return sum of 2 numbers, in the following format
+
+*GET* ~<host:port>/<lang>/plus?x=1&y=3~
+#+begin_src shell
+# response
+{
+   "total": 4
+}
+#+end_src
+
+*** HTTPKit (clojure) vs FastAPI (python)
+
+- HTTPKit
+#+begin_src  code
+$ bombardier -c 100 -d 10s "http://localhost:8080/clojure/plus?x=1&y=3"
+Bombarding http://localhost:8080/clojure/plus?x=1&y=3 for 10s using 100 connection(s)
+[===================================================] 10s
+Done!
+Statistics        Avg      Stdev        Max
+  Reqs/sec     22346.60    6086.12   36447.02
+  Latency        4.47ms     2.72ms   137.63ms
+  HTTP codes:
+    1xx - 0, 2xx - 223464, 3xx - 0, 4xx - 0, 5xx - 0
+    others - 0
+  Throughput:     4.99MB/s
+#+end_src
+
+
+- FastAPI
+#+begin_src  code
+$ bombardier -c 100 -d 10s "http://localhost:5000/python/plus?x=1&y=3"
+Bombarding http://localhost:5000/python/plus?x=1&y=3 for 10s using 100 connection(s)
+[====================================================] 10s
+Done!
+Statistics        Avg      Stdev        Max
+  Reqs/sec      6030.55    1495.42   11746.19
+  Latency       16.67ms     4.65ms   122.06ms
+  HTTP codes:
+    1xx - 0, 2xx - 60020, 3xx - 0, 4xx - 0, 5xx - 0
+    others - 0
+  Throughput:     1.24MB/s
+#+end_src
+/NOTE: to be frank, I expected more from FastAPI/ :(
+
+
+**** May add Actix-Web (rust) and some javascript server-app later...
