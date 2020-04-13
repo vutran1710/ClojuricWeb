@@ -1,5 +1,5 @@
 {:webserver
-  {:port #profile {:default 8000
-                   :dev 8000
-                   :test 8002
-                   :prod #env PORT}}}
+ {:port #profile {:default 8000
+                  :dev     8000
+                  :test    8002
+                  :prod    #or [#env PORT 8080]}}}

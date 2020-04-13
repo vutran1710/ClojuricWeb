@@ -1,1 +1,5 @@
-GET http://localhost:8000/plain/plus?x=1&y=2
+# clojure
+GET http://localhost:8000/plain/plus?x=1&y=3
+
+# python
+GET http://localhost:5000/python/plus?x=3&y=5

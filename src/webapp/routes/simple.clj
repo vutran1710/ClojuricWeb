@@ -4,7 +4,7 @@
             [aero.core :refer (read-config)]))
 
 (def routes
-  ["/plain"
+  ["/clojure"
    ["/plus" {:get  (fn [{{:strs [x y]} :query-params :as req}]
                      (let [result   (+ (Long/parseLong x) (Long/parseLong y))
                            response {:total result}]
