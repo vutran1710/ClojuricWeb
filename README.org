@@ -8,6 +8,8 @@
 - [[#introduction][Introduction]]
 - [[#get-it-up][Get it up!]]
 - [[#benchmarking][Benchmarking]]
+  - [[#tests--results][Tests & Results]]
+  - [[#summary][Summary]]
 
 * Introduction
 Testing webserver with *HTTPKit* and *Reitit*, versus some other frameworks
@@ -44,9 +46,12 @@ $ CLJ_ENV=production java -jar target/webapp-0.1.0-SNAPSHOT-standalone.jar
 
 * Benchmarking
 
+** Tests & Results
+
 - Tool: [[https://github.com/codesenberg/bombardier][bombardier]]
 - Concurrent connection: 100
 - Duration: 10s
+- Env: *production* for all test app
 - Testing on a simple API that return sum of 2 numbers, in the following format
 
 *GET* ~<host:port>/<lang>/plus?x=1&y=3~
@@ -57,13 +62,13 @@ $ CLJ_ENV=production java -jar target/webapp-0.1.0-SNAPSHOT-standalone.jar
 }
 #+end_src
 
-*** HTTPKit (clojure) vs FastAPI (python)
+*** HTTPKit (clojure) vs FastAPI (python) vs ActixWeb (rust)
 
 - HTTPKit
 #+begin_src  code
 $ bombardier -c 100 -d 10s "http://localhost:8080/clojure/plus?x=1&y=3"
 Bombarding http://localhost:8080/clojure/plus?x=1&y=3 for 10s using 100 connection(s)
-[===================================================] 10s
+[===================================================================================] 10s
 Done!
 Statistics        Avg      Stdev        Max
   Reqs/sec     22346.60    6086.12   36447.02
@@ -79,7 +84,7 @@ Statistics        Avg      Stdev        Max
 #+begin_src  code
 $ bombardier -c 100 -d 10s "http://localhost:5000/python/plus?x=1&y=3"
 Bombarding http://localhost:5000/python/plus?x=1&y=3 for 10s using 100 connection(s)
-[====================================================] 10s
+[===================================================================================] 10s
 Done!
 Statistics        Avg      Stdev        Max
   Reqs/sec      6030.55    1495.42   11746.19
@@ -91,5 +96,25 @@ Statistics        Avg      Stdev        Max
 #+end_src
 /NOTE: to be frank, I expected more from FastAPI/ :(
 
+- Actix-Web
+#+begin_src  code
+$ bombardier -c 100 -d 10s "http://localhost:8080/rust/plus?x=1&y=3"
+Bombarding http://localhost:8080/rust/plus?x=1&y=3 for 10s using 100 connection(s)
+[===================================================================================] 10s
+Done!
+Statistics        Avg      Stdev        Max
+  Reqs/sec     84256.16   12985.20   94065.91
+  Latency        1.19ms     3.14ms   139.91ms
+  HTTP codes:
+    1xx - 0, 2xx - 839082, 3xx - 0, 4xx - 0, 5xx - 0
+    others - 0
+  Throughput:    15.84MB/s
+#+end_src
 
-**** May add Actix-Web (rust) and some javascript server-app later...
+
+** Summary
+
+- *ActixWeb* ~ 4x faster than *HTTPKit*
+- *HTTPKit* ~ 3x faster than *FastAPI*
+
+ May add some more server-app later...
